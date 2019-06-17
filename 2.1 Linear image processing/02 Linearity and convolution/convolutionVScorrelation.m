@@ -7,12 +7,14 @@ function main()
     % 使用高斯核时，两种操作的结果一致。
     g=[1 2 2; 2 4 2; 1 2 1;];
     ksize=size(g, 1);
-    % 相关运算不具有交换性，交换f,g顺序得到的结果是翻转的；
+    % 相关运算不具有交换性，交换f,g顺序得到的结果是翻转的(旋转180度)；
     % 卷积运算具有交换性，交换f,g顺序得到的结果是相同的。（可以拿上述例子具体画一下）
-    output = convolution(f, g);
+    output = correlation(f, g);
     disp('f*g:');
     disp(output);
-    
+    output = correlation(g, f);
+    disp('g*f:');
+    disp(output);
     % 卷积运算的结合律不成立？ %
     h=[2 1 5; 7 5 2; 3 9 1];
     disp('(f*g)*h');
