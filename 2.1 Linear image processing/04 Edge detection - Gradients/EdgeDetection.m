@@ -7,6 +7,7 @@ end
 function test1()
     img = imread('../images/lena.png'); % zx.jpg
     img = rgb2gray(img);
+    % sobel 微分/梯度算子
     sy = fspecial('sobel'); % sy: sobel in y direction，sy的y轴正方向为向上
 
     % 不加double(img)，滤波后输出的类型是uint8，这样就只能检测到沿着正方向像素值剧烈变大的边(即由暗变亮的边)，
