@@ -1,7 +1,9 @@
 
 function main()
 %     test1();
-    test2();
+%     test2();
+%     canny_edge_detection();
+    test2_binary_gradient_img_version()
 end
 
 function test1()
@@ -39,6 +41,7 @@ function test2()
     
     % figure, imshow(oy); % 没做scale，显示出来的图像没法看
     imshow(img);
+%     figure, imshow(oy, []); 用这条语句可以自动调整数据的范围以便于显示，应该是使用了最大最小归一化。
     figure, imagesc(oy);
     colormap gray;
     figure, imagesc(ox);
@@ -48,8 +51,42 @@ function test2()
     % 尝试合起来
     figure, imagesc(ox+oy);
     colormap gray;
-    % TODO: 测试lena.png
 end
 
+function test2_binary_gradient_img_version()
+    img = imread('../images/lena.png'); % zx.jpg
+    img = rgb2gray(img);
+    sy = fspecial('sobel');
+    % oy中负值被保留了
+    oy = imfilter(double(img), sy);
+    sx_neg = sy';
+    sx = -sy';
+    ox_neg = imfilter(double(img), sx_neg);
+    ox = imfilter(double(img), sx);
+    
+    % 数值矩阵变换成灰度图，实际上就是做了一个最大最小归一化到[0,1]
+    oy = mat2gray(oy); 
+    ox_neg = mat2gray(ox_neg);
+    ox = mat2gray(ox);
+    
+    % 转换为二值图
+    oy = im2bw(oy);
+    ox_neg = im2bw(ox_neg);
+    ox = im2bw(ox);
+    
+    imshow(img);
+    figure, imshow(oy);
+    figure, imshow(ox_neg);
+    figure, imshow(ox);
+    
+end
+
+function canny_edge_detection()
+    img = imread('../images/lena.png');
+    img = rgb2gray(img);
+    imshow(img);
+    e = edge(img, 'canny'); % 默认是sobel算子检测边缘
+    figure, imshow(e);
+end
 
 
